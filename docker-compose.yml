@@ -48,4 +48,4 @@ services:
 
 networks:
   jon-network:
-    external: true
+    # external: true

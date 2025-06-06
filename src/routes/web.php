@@ -6,9 +6,9 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ComplainController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ConfigAppController;
@@ -37,8 +37,11 @@ Route::group(['middleware' => 'auth:web'], function ()
 {
     Route::get('/', [DashboardCustomerController::class, 'index'])->name('dashboard');
     Route::get('/logout', [LoginChatController::class, 'logout'])->name('web.logout');
-    Route::resource('chat', ChatController::class);
-    Route::post('/search', [SearchController::class, 'handle'])->name('search');
+    Route::get('chat', [ChatController::class, 'index'])->name('chat');
+    Route::post('/chat', [ChatController::class, 'handle'])->name('chat.send');
+    // Route::get('/complain', [ComplainController::class, 'index'])->name('complain');
+    // Route::post('/complain', [ComplainController::class, 'store'])->name('complain.store');
+    Route::resource('complain', ComplainController::class);
 });
 
 Route::prefix('admin')->group(

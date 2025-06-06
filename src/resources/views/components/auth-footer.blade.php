@@ -1,3 +1,3 @@
   <div class="simple-footer">
-      Copyright &copy; 2024
+      Copyright &copy; 2025
   </div>

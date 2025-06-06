@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\OpenAIService;
 use App\Services\ChatGptService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\DataTables\ProductsDataTable;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\ProductPostRequest;
-use App\Services\OpenAIService;
 
 class ProductController extends Controller
 {
@@ -127,44 +129,5 @@ class ProductController extends Controller
         ];
 
         return redirect()->route('product.index')->with($notification);
-    }
-
-    public function search(Request $request)
-    {
-        // $query = $request->input('query');
-        $query = $request->description;
-
-        $input = $query;
-
-        $keywords = $this->chat->extractKeywords($input);
-
-        $queryData = DB::table('products');
-
-        foreach ($keywords as $keyword)
-        {
-            $queryData->orWhere('product_name', 'like', "%$keyword%")
-                ->orWhere('description', 'like', "%$keyword%")
-                ->orWhere('price', 'like', "%$keyword%");
-        }
-        $data = $queryData->get();
-
-        if (!count($data))
-        {
-            try
-            {
-                $sql = $this->chat->generateProductQuery($query);
-                $data = DB::select(DB::raw($sql));
-            }
-            catch (\Exception $e)
-            {
-                return response()->json(['error' => 'Query gagal: ' . $e->getMessage()], 400);
-            }
-        }
-
-        if (!count($data))
-        {
-            $data = $this->chat->chat($query);
-        }
-        return response()->json($data);
     }
 }

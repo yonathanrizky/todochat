@@ -1,7 +1,7 @@
 <footer class="main-footer">
     <div class="footer-left">
-        Copyright &copy; 2024
-    <div class="footer-right">
-        .
-    </div>
+        Copyright &copy; 2025
+        <div class="footer-right">
+            .
+        </div>
 </footer>

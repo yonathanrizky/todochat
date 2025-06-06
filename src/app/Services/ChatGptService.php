@@ -21,10 +21,10 @@ class ChatGptService
             ->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-4',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'Kamu adalah asisten untuk membantu membuat query SQL untuk MySQL.'],
+                    // ['role' => 'system', 'content' => 'Kamu adalah asisten untuk membantu membuat query SQL untuk MySQL.'],
                     ['role' => 'user', 'content' => $prompt],
                 ],
-                // 'temperature' => 0.2,
+                'temperature' => 0.2,
             ]);
 
         if ($response->successful())

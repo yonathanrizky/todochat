@@ -23,7 +23,7 @@
                                 <h4>Laporan Keluhan</h4>
                             </div>
                             <div class="card-body">
-                                10
+                                {{ $count }}
                             </div>
                         </div>
                     </div>

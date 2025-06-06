@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Complain;
 use Illuminate\Http\Request;
 use App\Services\OpenAIService;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardCustomerController extends Controller
 {
@@ -17,12 +19,11 @@ class DashboardCustomerController extends Controller
 
     public function index()
     {
-        // $query = "berikan informasi terbaru";
-        // $prompt = "apakah kalimat $query ini mengandung huruf info, berikan nilai 1 jika ya, 2 jika tidak";
-        // $response = $this->openai->chat($prompt);
-        // dd($response);
+        $customer_id = Auth::guard('web')->user()->id;
+        $count = Complain::where('customer_id', $customer_id)->get()->count();
         return view('pages.dashboard_customer.index', [
             'type_menu' => 'dashboard',
+            'count' => $count
         ]);
     }
 }

@@ -9,6 +9,7 @@ use App\DataTables\NewsDataTable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\NewsPostRequest;
+use Illuminate\Support\Facades\Session;
 
 class NewsController extends Controller
 {
@@ -117,63 +118,5 @@ class NewsController extends Controller
         ];
 
         return redirect()->route('news.index')->with($notification);
-    }
-
-    public function search(Request $request)
-    {
-        $query = $request->description;
-        $customer_id = Auth::guard('web')->user()->id;
-        $input = $query;
-
-        $keywords = $this->chat->extractKeywords($input);
-
-        $queryData = DB::table('news');
-
-        foreach ($keywords as $keyword)
-        {
-            $queryData->Where('content', 'like', "%$keyword%");
-        }
-        $data = $queryData->get();
-
-        if (!count($data))
-        {
-            try
-            {
-                $sql = $this->chat->generateNewsQuery($query);
-                $data = DB::select(DB::raw($sql));
-            }
-            catch (\Exception $e)
-            {
-                return response()->json(['error' => 'Query gagal: ' . $e->getMessage()], 400);
-            }
-        }
-
-        if (!count($data))
-        {
-            $data = $this->chat->chat($query);
-        }
-
-        $chat_id = DB::table('chats')->insertGetId([
-            'customer_id' => $customer_id
-        ]);
-
-        $chats[] = [
-            'chat_id' => $chat_id,
-            'message' => $input,
-            'bot' => 0
-        ];
-
-        foreach ($data as $item)
-        {
-            $chats[] = [
-                'chat_id' => $chat_id,
-                'message' => $item->content,
-                'bot' => 1
-            ];
-        }
-
-        $conversation = DB::table('conversations')->insert($chats);
-
-        return response()->json($data);
     }
 }

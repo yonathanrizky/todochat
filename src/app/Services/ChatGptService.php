@@ -81,6 +81,30 @@ class ChatGptService
         return trim($response->json()['choices'][0]['message']['content'] ?? '');
     }
 
+    public function generateNewsQuery(string $input): string
+    {
+        // Buat query SQL sederhana dari tabel `news` untuk mencari data berdasarkan kalimat: "$input".
+        $prompt = <<<PROMPT
+        Buat query SQL sederhana dari tabel `news` untuk mencari data berdasarkan kalimat: "$input".
+        Gunakan SELECT * FROM news WHERE ...
+        Jangan gunakan MATCH, full-text, atau JOIN. Jangan pakai titik koma. Berikan hasil hanya syntax SQL.
+        Pastikan valid untuk MariaDB.
+        PROMPT;
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->apiKey,
+            'Content-Type' => 'application/json',
+        ])->post($this->endpoint, [
+            'model' => 'gpt-4',
+            'messages' => [
+                ['role' => 'user', 'content' => $prompt],
+            ],
+            'temperature' => 0.2,
+        ]);
+
+        return trim($response->json()['choices'][0]['message']['content'] ?? '');
+    }
+
     public function chat($prompt)
     {
         $response = Http::withHeaders([

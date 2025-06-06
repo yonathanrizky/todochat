@@ -45,6 +45,10 @@
                             <a class="nav-link" href="{{ url('admin/product') }}">Produk</a>
                         </li>
 
+                        <li class='{{ Request::is('news') ? 'active' : '' }}'>
+                            <a class="nav-link" href="{{ url('admin/news') }}">News</a>
+                        </li>
+
                         <li class='{{ Request::is('config-app') ? 'active' : '' }}'>
                             <a class="nav-link" href="{{ url('admin/config-app') }}">Pengaturan</a>
                         </li>

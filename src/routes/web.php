@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\News;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SearchController;
@@ -59,6 +61,7 @@ Route::prefix('admin')->group(
             {
                 Route::resource('product', ProductController::class);
                 Route::resource('user', UserController::class);
+                Route::resource('news', NewsController::class);
                 Route::resource('customer', CustomerController::class);
                 Route::get('config-app', [ConfigAppController::class, 'index'])->name('config-app');
                 Route::post('config-app', [ConfigAppController::class, 'store'])->name('config-app.store');

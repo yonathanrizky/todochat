@@ -48,34 +48,12 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label>SMTP Host</label>
-                                            <input type="text" class="form-control @error('host') is-invalid @enderror"
-                                                value="{{ old('host') ? old('host') : $data->host }}" name="host">
-                                            @error('host')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>SMTP Port</label>
-                                            <input type="text" class="form-control @error('port') is-invalid @enderror"
-                                                value="{{ old('port') ? old('port') : $data->port }}" name="port">
-                                            @error('port')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>SMTP Username</label>
+                                            <label>Open AI Key</label>
                                             <input type="text"
-                                                class="form-control @error('username') is-invalid @enderror"
-                                                value="{{ old('username') ? old('username') : $data->username }}"
-                                                name="username">
-                                            @error('username')
+                                                class="form-control @error('openai_api_key') is-invalid @enderror"
+                                                value="{{ old('openai_api_key') ? old('openai_api_key') : $data->openai_api_key }}"
+                                                name="openai_api_key">
+                                            @error('openai_api_key')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
@@ -83,49 +61,12 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label>SMTP Password</label>
+                                            <label>Open AI Model</label>
                                             <input type="text"
-                                                class="form-control @error('password') is-invalid @enderror"
-                                                value="{{ old('password') ? old('password') : $data->password }}"
-                                                name="password">
-                                            @error('password')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>SMTP From Addres</label>
-                                            <input type="text"
-                                                class="form-control @error('from_address') is-invalid @enderror"
-                                                value="{{ old('from_address') ? old('from_address') : $data->from_address }}"
-                                                name="from_address">
-                                            @error('from_address')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>SMTP From Name</label>
-                                            <input type="text"
-                                                class="form-control @error('from_name') is-invalid @enderror"
-                                                value="{{ old('from_name') ? old('from_name') : $data->from_name }}"
-                                                name="from_name">
-                                            @error('from_name')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-form-label">Pesan</label>
-                                            <div class="@error('email') is-invalid @enderror">
-                                                <textarea class="summernote-simple" name="email">{{ old('email') ? old('email') : $data->email }}</textarea>
-                                            </div>
-                                            @error('email')
+                                                class="form-control @error('open_ai_model') is-invalid @enderror"
+                                                value="{{ old('open_ai_model') ? old('open_ai_model') : $data->open_ai_model }}"
+                                                name="open_ai_model">
+                                            @error('open_ai_model')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>

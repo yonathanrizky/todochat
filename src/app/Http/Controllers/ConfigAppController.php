@@ -13,13 +13,8 @@ class ConfigAppController extends Controller
         $data = (object) [
             'appname' => env('APP_NAME'),
             'logo' => env('IMAGE_LOGO'),
-            'host' => env('MAIL_HOST'),
-            'port' => env('MAIL_PORT'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
-            'from_address' => env('MAIL_FROM_ADDRESS'),
-            'from_name' => env('MAIL_FROM_NAME'),
-            'email' => DB::table('config')->get()[0]->email
+            'openai_api_key' => env('OPENAI_API_KEY'),
+            'open_ai_model' => env('OPENAI_MODEL'),
         ];
         return view('pages.config.index', ['type_menu' => 'config-app', 'data' => $data]);
     }
@@ -28,34 +23,22 @@ class ConfigAppController extends Controller
     {
         $valid = [
             'appname' => 'required|max:255',
-            'host' => 'required',
-            'port' => 'required',
-            'username' => 'required',
-            'password' => 'required',
-            'from_address' => 'required',
-            'from_name' => 'required',
+            'openai_api_key' => 'required',
+            'open_ai_model' => 'required',
         ];
 
         $message = [
             'appname.max' => 'Maksimal judul 255 karakter',
             'appname.required' => 'Nama Aplikasi wajib diisi',
-            'host.required' => 'SMTP Host wajib diisi',
-            'port.required' => 'SMTP Port wajib diisi',
-            'username.required' => 'SMTP Username wajib diisi',
-            'password.required' => 'SMTP Password wajib diisi',
-            'from_address.required' => 'SMTP Address wajib diisi',
-            'from_name.required' => 'SMTP From Name wajib diisi',
+            'openai_api_key.required' => 'Open AI Key wajib diisi',
+            'open_ai_model.required' => 'Open AI Model wajib diisi',
         ];
         $validated = $this->validate($request, $valid, $message);
         $this->setEnv('APP_NAME', str_replace(' ', '_', $request->appname));
 
-        $this->setEnv('MAIL_HOST', str_replace(' ', '_', $request->host));
-        $this->setEnv('MAIL_PORT', str_replace(' ', '_', $request->port));
-        $this->setEnv('MAIL_USERNAME', str_replace(' ', '_', $request->username));
-        $this->setEnv('MAIL_PASSWORD', str_replace(' ', '_', $request->password));
+        $this->setEnv('OPENAI_API_KEY', $request->openai_api_key);
+        $this->setEnv('OPENAI_MODEL', $request->open_ai_model);
 
-        $this->setEnv('MAIL_FROM_ADDRESS', str_replace(' ', '_', $request->from_address));
-        $this->setEnv('MAIL_FROM_NAME', str_replace(' ', '_', $request->from_name));
         if ($request->file)
         {
             File::delete('/public/img/' . env('IMAGE_LOGO'));
@@ -67,8 +50,6 @@ class ConfigAppController extends Controller
             $file->move('img', $filename);
             $this->setEnv('IMAGE_LOGO', $filename);
         }
-
-        DB::table('config')->updateOrInsert(['id' => '1'], ['email' => $request->email]);
 
         $notification = [
             'message' => 'Data Berhasil Diubah',

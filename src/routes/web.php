@@ -15,6 +15,7 @@ use App\Http\Controllers\ConfigAppController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginChatController;
 use App\Http\Controllers\PrintMemoController;
+use App\Http\Controllers\ComplainCustomerController;
 use App\Http\Controllers\DashboardCustomerController;
 
 /*
@@ -66,6 +67,7 @@ Route::prefix('admin')->group(
                 Route::resource('user', UserController::class);
                 Route::resource('news', NewsController::class);
                 Route::resource('customer', CustomerController::class);
+                Route::resource('complain-customer', ComplainCustomerController::class);
                 Route::get('config-app', [ConfigAppController::class, 'index'])->name('config-app');
                 Route::post('config-app', [ConfigAppController::class, 'store'])->name('config-app.store');
             });

@@ -5,22 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Complain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use App\DataTables\ComplainCustomersDataTable;
 
-class DashboardController extends Controller
+class ComplainCustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ComplainCustomersDataTable $dataTable)
     {
-        $count = Complain::get()->count();
-        return view('pages.dashboard.index', [
-            'type_menu' => 'dashboard',
-            'memo_in' => $count,
-        ]);
+        return $dataTable->render('pages.complain_customer.index', ['type_menu' => 'complain']);
     }
 
     /**
@@ -30,7 +26,6 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -41,7 +36,6 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -50,9 +44,20 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Complain $complain)
     {
-        //
+        $chats = DB::select("
+        select c.message, c.bot
+        from conversations c
+        join chats ch on ch.id = c.chat_id
+        where ch.code = '{$complain->ticket_num}'
+        order by c.created_at
+        ");
+        return view('pages.complain_customer.show', [
+            'type_menu' => 'complain',
+            'complain' => $complain,
+            'chats' => $chats
+        ]);
     }
 
     /**

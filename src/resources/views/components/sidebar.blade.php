@@ -22,8 +22,8 @@
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-sticky-note"></i><span>Master
                         Data</span></a>
                 <ul class="dropdown-menu">
-                    <li class='{{ Request::is('memo-in') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('memo-in') }}">Data Keluhan</a>
+                    <li class='{{ Request::is('complain-customer') ? 'active' : '' }}'>
+                        <a class="nav-link" href="{{ url('admin/complain-customer') }}">Data Keluhan</a>
                     </li>
                     <li class='{{ Request::is('customer') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('admin/customer') }}">Data Customer</a>

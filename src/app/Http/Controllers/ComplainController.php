@@ -44,7 +44,7 @@ class ComplainController extends Controller
         $complain = new Complain();
         $description = $request->description;
         $customer_id = Auth::guard('web')->user()->id;
-        $ticketNum = Session::get('chat_id');
+        $ticketNum = Session::get('ticket_num');
         if (!$ticketNum)
         {
             $ticketNum = time();

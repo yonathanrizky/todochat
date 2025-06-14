@@ -48,9 +48,9 @@ class ChatController extends Controller
         }
         else
         {
-            return response()->json([
-                'bot' => 'Terjadi Kegagalan,',
-            ]);
+            // return response()->json([
+            //     'bot' => 'Terjadi Kegagalan,',
+            // ]);
             return response()->json(['error' => 'Kategori pencarian tidak dikenali, hasil: ' . $category], 400);
         }
     }
@@ -107,11 +107,12 @@ class ChatController extends Controller
         $chatId = Session::get('chat_id');
         if (!$chatId)
         {
+            $code = time();
             $chatId = DB::table('chats')->insertGetId([
                 'customer_id' => $customer_id,
-                'code' => time()
+                'code' => $code
             ]);
-            session(['chat_id' => $chatId]);
+            session(['chat_id' => $chatId, 'ticket_num' => $code]);
         }
 
         $chats = [
@@ -184,11 +185,12 @@ class ChatController extends Controller
         $chatId = Session::get('chat_id');
         if (!$chatId)
         {
+            $code = time();
             $chatId = DB::table('chats')->insertGetId([
                 'customer_id' => $customer_id,
                 'code' => time()
             ]);
-            session(['chat_id' => $chatId]);
+            session(['chat_id' => $chatId, 'ticket_num' => $code]);
         }
 
         $chats = [

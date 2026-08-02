@@ -13,5 +13,8 @@ class Complain extends Model
         'ticket_num',
         'customer_id',
         'description',
+        'address',
+        'kelurahan',
+        'fullname'
     ];
 }

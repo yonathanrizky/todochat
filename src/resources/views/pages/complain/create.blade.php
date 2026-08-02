@@ -20,6 +20,42 @@
                             <form method="POST" action="{{ route('complain.store') }}">
                                 @csrf
                                 <div class="card-body">
+                                    
+                                    <div class="form-group">
+                                        <label>Nama</label>
+                                        <input type="text"
+                                            class="form-control @error('fullname') is-invalid @enderror"
+                                            value="{{ old('fullname') }}" name="fullname">
+                                        @error('fullname')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Kelurahan</label>
+                                        <input type="text"
+                                            class="form-control @error('kelurahan') is-invalid @enderror"
+                                            value="{{ old('kelurahan') }}" name="kelurahan">
+                                        @error('kelurahan')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Alamat</label>
+                                        <input type="text"
+                                            class="form-control @error('address') is-invalid @enderror"
+                                            value="{{ old('address') }}" name="address">
+                                        @error('address')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
 
                                     <div class="form-group">
                                         <label class="col-form-label">Pesan</label>

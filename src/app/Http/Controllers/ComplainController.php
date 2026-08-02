@@ -43,6 +43,9 @@ class ComplainController extends Controller
     {
         $complain = new Complain();
         $description = $request->description;
+        $fullname = $request->fullname;
+        $kelurahan = $request->kelurahan;
+        $address = $request->address;
         $customer_id = Auth::guard('web')->user()->id;
         $ticketNum = Session::get('ticket_num');
         if (!$ticketNum)
@@ -53,6 +56,9 @@ class ComplainController extends Controller
         $complain->ticket_num = $ticketNum;
         $complain->description = $description;
         $complain->customer_id = $customer_id;
+        $complain->fullname = $fullname;
+        $complain->kelurahan = $kelurahan;
+        $complain->address = $address;
         $complain->save();
 
         $notification = [

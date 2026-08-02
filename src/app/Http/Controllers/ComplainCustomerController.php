@@ -44,8 +44,9 @@ class ComplainCustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Complain $complain)
+    public function show($id)
     {
+        $complain = Complain::find($id);
         $chats = DB::select("
         select c.message, c.bot
         from conversations c
@@ -53,6 +54,7 @@ class ComplainCustomerController extends Controller
         where ch.code = '{$complain->ticket_num}'
         order by c.created_at
         ");
+        
         return view('pages.complain_customer.show', [
             'type_menu' => 'complain',
             'complain' => $complain,

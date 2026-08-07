@@ -84,6 +84,18 @@ class ComplainCustomerController extends Controller
     {
         //
     }
+    
+    public function updateStatus(Complain $complain)
+    {
+        $complain->update(['status' => true]);
+        
+        $notification = [
+            'message' => 'Keluhan berhasil ditandai selesai.',
+            'alert-type' => 'success'
+        ];
+    
+        return redirect()->back()->with($notification);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -91,8 +103,14 @@ class ComplainCustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Complain $complain)
     {
-        //
+        $complain->delete();
+        $notification = [
+            'message' => 'Data Berhasil Dihapus',
+            'alert-type' => 'success'
+        ];
+
+        return redirect()->route('complain-customer.index')->with($notification);
     }
 }

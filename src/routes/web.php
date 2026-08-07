@@ -68,6 +68,7 @@ Route::prefix('admin')->group(
                 Route::resource('news', NewsController::class);
                 Route::resource('customer', CustomerController::class);
                 Route::resource('complain-customer', ComplainCustomerController::class);
+                Route::patch('complain-customer/{complain}/update-status', [ComplainCustomerController::class, 'updateStatus'])->name('complain-customer.update-status');
                 Route::get('config-app', [ConfigAppController::class, 'index'])->name('config-app');
                 Route::post('config-app', [ConfigAppController::class, 'store'])->name('config-app.store');
             });

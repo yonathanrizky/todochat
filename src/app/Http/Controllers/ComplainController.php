@@ -59,6 +59,7 @@ class ComplainController extends Controller
         $complain->fullname = $fullname;
         $complain->kelurahan = $kelurahan;
         $complain->address = $address;
+        $complain->status = false;
         $complain->save();
 
         $notification = [
@@ -120,8 +121,14 @@ class ComplainController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Complain $complain)
     {
-        //
+        $complain->delete();
+        $notification = [
+            'message' => 'Data Berhasil Dihapus',
+            'alert-type' => 'success'
+        ];
+
+        return redirect()->route('complain.index')->with($notification);
     }
 }

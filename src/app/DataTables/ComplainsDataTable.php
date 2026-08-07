@@ -1,7 +1,5 @@
 <?php
-
 namespace App\DataTables;
-
 use App\Models\Complain;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -24,21 +22,51 @@ class ComplainsDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('no', 'No')
             ->setRowId('id')
-            ->addColumn('action', function ($data)
-            {
-                return '
-                <a href = "' . route('complain.show', $data->id) . '" class="btn btn-primary">' . '<i class="fas fa-eye"></i>' . '</a>
-                ';
+            ->editColumn('created_at', function ($data) {
+                return $data->created_at->format('d-m-Y');
             })
-            ->filterColumn('description', function ($query, $keyword)
-            {
+            ->editColumn('status', function ($data) {
+                return $data->status
+                    ? '<span class="badge badge-success">Selesai</span>'
+                    : '<span class="badge badge-warning">Diproses</span>';
+            })
+            ->addColumn('action', function ($data) {
+                
+                if ($data->status) {
+                    return '
+                    <form action="' . route('complain.destroy', $data->id) . '" method="POST" id="dept-table">
+                    <a href = "' . route('complain.show', $data->id) . '" class="btn btn-primary btn-sm mr-1">' . '<i class="fas fa-eye"></i>' . '</a>
+                    ' . csrf_field() . '
+                    ' . method_field("DELETE") . '
+                     <button type="submit" class="btn btn-danger btn-sm mr-1"><i class="fas fa-trash"></i></button>
+                    </form>
+                    ';    
+                }
+                else {
+                    $btn = '<a href="' . route('complain.show', $data->id) . '" class="btn btn-primary btn-sm mr-1"><i class="fas fa-eye"></i></a>';    
+                }
+
+                return $btn;
+            })
+            ->rawColumns(['status', 'action'])
+            ->filterColumn('description', function ($query, $keyword) {
                 $sql = "description like ?";
                 $query->whereRaw($sql, ["%{$keyword}%"]);
             })
-            ->filterColumn('ticket_num', function ($query, $keyword)
-            {
+            ->filterColumn('ticket_num', function ($query, $keyword) {
                 $sql = "ticket_num like ?";
                 $query->whereRaw($sql, ["%{$keyword}%"]);
+            })
+            ->filterColumn('status', function ($query, $keyword) {
+                $keyword = strtolower(trim($keyword));
+
+                if (str_contains('selesai', $keyword)) {
+                    $query->orWhere('status', true);
+                }
+
+                if (str_contains('diproses', $keyword)) {
+                    $query->orWhere('status', false);
+                }
             });
     }
 
@@ -57,6 +85,7 @@ class ComplainsDataTable extends DataTable
                 'id',
                 'description',
                 'ticket_num',
+                'status',
                 'created_at'
             ]);
     }
@@ -110,6 +139,7 @@ class ComplainsDataTable extends DataTable
             Column::computed('no')->render('meta.row + meta.settings._iDisplayStart + 1;'),
             Column::make('ticket_num')->title('Nomor Tiket'),
             Column::make('created_at')->title('Tanggal'),
+            Column::make('status')->title('Status'),
             Column::computed('action')->addClass('text-center')
         ];
     }
